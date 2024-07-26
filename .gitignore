@@ -1,0 +1,6 @@
+# envs 
+.venv
+.env
+
+#test cases
+*test*.*
