@@ -6,17 +6,18 @@ Any dead cell with exactly three live neighbours becomes a live cell, as if by r
 
 """
 
+import os
 import time
 
 ALIVE = "⬜"
 DEAD = "⬛"
 
 matrix = [
-    ["0", "0", "0", "0", "0"],
-    ["0", "0", "1", "0", "0"],
-    ["0", "0", "1", "0", "0"],
-    ["0", "0", "1", "0", "0"],
-    ["0", "0", "0", "0", "0"],
+    [0, 1, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [1, 1, 1, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
 ]
 directions = [
     [0, -1],
@@ -30,22 +31,29 @@ directions = [
 ]
 
 
-def display(): ...
+def clear_screen():
+    os.system("cls" if os.name == "nt" else "clear")
 
 
-def nextstate(x, y):
-    count = 0
+def display(rows: int, cols: int) -> None:
+    global matrix
+    clear_screen()
+    for y in range(rows):
+        for x in range(cols):
+            print(ALIVE if matrix[y][x] else DEAD, end="")
+        print()
 
-    print(count)
+
+def next_step():
+    global matrix
+    print(" i was inside next_step")
 
 
 def main():
-    global matrix
-    for x, outer in enumerate(matrix):
-        for y, inner in enumerate(outer):
-            if 0 < x < len(matrix) and 0 < y < len(outer):
-                nextstate(x, y)
-                time.sleep(2)
+    for _ in range(100):
+        display(rows=5, cols=5)
+        next_step()
+        time.sleep(1)
 
 
 if __name__ == "__main__":
