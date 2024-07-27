@@ -66,14 +66,15 @@ def next_step(rows: int, cols: int) -> None:
                 if isalive(cols, rows, x, y, index):
                     alive += 1
 
-            # if two neighbours alive, then alive
             if matrix[y][x] == 1:
                 if alive < 2 or alive > 3:
+                    # if more alive or less alive, then dead
                     new_matrix[y][x] = 0
                 else:
+                    # else alive
                     new_matrix[y][x] = 1
 
-            # if more alive or less alive, then dead
+            # if three neighbours alive, then alive
             else:
                 if alive == 3:
                     new_matrix[y][x] = 1
