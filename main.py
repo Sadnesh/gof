@@ -13,11 +13,15 @@ ALIVE = "⬜"
 DEAD = "⬛"
 
 matrix = [
-    [0, 1, 0, 0, 0],
-    [0, 0, 1, 0, 0],
-    [1, 1, 1, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
 ]
 directions = [
     [0, -1],
@@ -44,16 +48,46 @@ def display(rows: int, cols: int) -> None:
         print()
 
 
-def next_step():
+def isalive(cols: int, rows: int, x: int, y: int, index: int) -> bool:
     global matrix
-    print(" i was inside next_step")
+    new_x = (x + cols + directions[index][0]) % cols
+    new_y = (y + rows + directions[index][1]) % rows
+    return matrix[new_y][new_x] == 1
+
+
+def next_step(rows: int, cols: int) -> None:
+    global matrix
+    new_matrix = [[0 for _ in range(cols)] for _ in range(rows)]
+
+    for y in range(rows):
+        for x in range(cols):
+            alive = 0
+            for index in range(8):
+                if isalive(cols, rows, x, y, index):
+                    alive += 1
+
+            # if two neighbours alive, then alive
+            if matrix[y][x] == 1:
+                if alive < 2 or alive > 3:
+                    new_matrix[y][x] = 0
+                else:
+                    new_matrix[y][x] = 1
+
+            # if more alive or less alive, then dead
+            else:
+                if alive == 3:
+                    new_matrix[y][x] = 1
+
+    matrix = new_matrix
 
 
 def main():
+    rows = 9
+    cols = 9
     for _ in range(100):
-        display(rows=5, cols=5)
-        next_step()
-        time.sleep(1)
+        display(rows, cols)
+        next_step(rows, cols)
+        time.sleep(0.2)
 
 
 if __name__ == "__main__":
